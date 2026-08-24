@@ -311,37 +311,27 @@ class CssConfig
         if (strpos((string) $cssLine, 'url') !== false && strpos((string) $cssLine, '..') !== false) {
             $cssLine = strtr($cssLine, ['../' => '../../' . $subDir . '/']);
         }
-//        if (strpos($cssLine, 'url') !== false) {
-//            //$cssLine = preg_replace('~url\s*\(\s*(\'|")(?!data)~', 'url($1../../' . $subDir . '/', $cssLine);
-//            $cssLine = preg_replace('~url\s*\(\s*(\'|")?(?!data)(.*?)\1?\)~', 'url($1../../' . $subDir . '/$2$1)', $cssLine);
-//        }
 
         return $cssLine;
     }
 
-    private function initCssVariables()
+        private function initCssVariables()
     {
         if (empty($this->cssVariables) && file_exists($this->settingsFile)) {
-            // Чтение и парсинг CSS файла
             $oCssParser = new Parser(file_get_contents($this->settingsFile));
             $oCssDocument = $oCssParser->parse();
 
             foreach ($oCssDocument->getAllRuleSets() as $oBlock) {
                 foreach ($oBlock->getRules() as $r) {
                     $value = $r->getValue();
-                    if (get_class($value) === 'Sabberworm\CSS\Value\Color') {
-                        $css_value = $value->render(new OutputFormat());
 
-                    } elseif (get_class($value) === 'Sabberworm\CSS\Value\RuleValueList') {
-                        $components = $value->getListComponents();
-
-                        $css_value = array_map(function ($component) {
-                            return (string) $component;
-                        }, $components);
-
-                        $css_value = implode($value->getListSeparator(), $css_value);
+                    if ($value instanceof \Sabberworm\CSS\Value\RuleValueList) {
+                        $css_value = implode(
+                            $value->getListSeparator(),
+                            array_map([$this, 'renderCssValue'], $value->getListComponents())
+                        );
                     } else {
-                        $css_value = (string) $value;
+                        $css_value = $this->renderCssValue($value);
                     }
 
                     if (strpos($r->getRule(), '--') === 0) {
@@ -350,6 +340,14 @@ class CssConfig
                 }
             }
         }
+    }
+    private function renderCssValue($value)
+    {
+        if (is_object($value) && method_exists($value, 'render')) {
+            return $value->render(new OutputFormat());
+        }
+
+        return (string) $value;
     }
 
 
