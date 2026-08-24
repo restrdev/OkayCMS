@@ -99,7 +99,7 @@ class ModuleCreateCommand extends Command
 
     private function formatSnakeCase(string $name): string
     {
-        return strtolower(preg_replace('/([a-z])([A-Z]+)/', '$1_$2', $name));
+        return strtolower((string) preg_replace('/([a-z])([A-Z]+)/', '$1_$2', $name));
     }
 
     private function createModuleFiles(string $vendor, string $module)

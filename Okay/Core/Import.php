@@ -55,7 +55,7 @@ class Import
         }
         if (!empty($fields)) {
             foreach ($fields as $csv=>$inner) {
-                if (isset($this->columnsNames[$inner]) && !in_array(mb_strtolower($csv), array_map("mb_strtolower", $this->columnsNames[$inner]))) {
+                if (isset($this->columnsNames[$inner]) && !in_array(mb_strtolower((string) $csv), array_map("mb_strtolower", $this->columnsNames[$inner]))) {
                     $this->columnsNames[$inner][] = $csv;
                 }
             }
@@ -81,12 +81,12 @@ class Import
     // Возвращает внутренние название колонки по названию колонки в файле
     private function internalColumnName($name)
     {
-        $name = trim($name);
+        $name = trim((string) $name);
         $name = str_replace('/', '', $name);
         $name = str_replace('\/', '', $name);
         foreach($this->columnsNames as $i=>$names) {
             foreach($names as $n) {
-                if(!empty($name) && preg_match("/^".preg_quote($name)."$/ui", $n)) {
+                if(!empty($name) && preg_match("/^".preg_quote($name)."$/ui", (string) $n)) {
                     return $i;
                 }
             }

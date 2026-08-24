@@ -201,6 +201,7 @@ $services = [
             new PR('design.smarty_security'),
             new PR('design.smarty_caching'),
             new PR('design.smarty_force_compile'),
+            new PR('design.static_classes'),
             new PR('root_dir'),
         ],
     ],

@@ -111,7 +111,7 @@ class CategoriesEntity extends Entity
             $category->url = str_replace('.', '', $category->url);
         }
 
-        $category->url = preg_replace("/[\s]+/ui", '', $category->url);
+        $category->url = preg_replace("/[\s]+/ui", '', (string) $category->url);
 
         while ($this->get((string)$category->url)) {
             if (preg_match('/(.+)([0-9]+)$/', $category->url, $parts)) {
@@ -342,7 +342,7 @@ class CategoriesEntity extends Entity
     /*Выборка категорий яндекс маркета*/
     public function getMarket($query = '')
     {
-        $query = mb_strtolower($query);
+        $query = mb_strtolower((string) $query);
         $marketCats = [];
         $file = 'files/downloads/market_categories.csv';
         if (file_exists($file)) {

@@ -10,6 +10,7 @@ use Okay\Core\TemplateConfig\FrontTemplateConfig;
 use Okay\Core\TplMod\TplMod;
 use Smarty;
 use Mobile_Detect;
+use SmartyException;
 
 class Design
 {
@@ -110,10 +111,7 @@ class Design
         'strpos',
         'sprintf',
         'vsprintf',
-        'preg_match'
     ];
-
-    private $smartyStaticClasses = [];
 
 
     public function __construct(
@@ -130,7 +128,6 @@ class Design
         $smartySecurity,
         $smartyCaching,
         $smartyForceCompile,
-        $smartyStaticClasses,
         $rootDir
     ) {
         $this->frontTemplateConfig = $frontTemplateConfig;
@@ -164,12 +161,9 @@ class Design
         $this->smarty->setCompileDir($rootDir.'compiled/'.$theme);
         $this->smarty->setTemplateDir($this->defaultTemplateDir);
 
-        $compileDir = $this->smarty->getCompileDir();
-        if (!is_dir($compileDir) && !@mkdir($compileDir, 0777, true) && !is_dir($compileDir)) {
-            throw new \RuntimeException(sprintf(
-                'Cannot create the Smarty compile directory "%s". Without it no page can be rendered.',
-                $compileDir
-            ));
+        // Создаем папку для скомпилированных шаблонов текущей темы
+        if (!is_dir($this->smarty->getCompileDir())) {
+            mkdir($this->smarty->getCompileDir(), 0777);
         }
         
         $this->smarty->setCacheDir('cache');
@@ -181,9 +175,6 @@ class Design
 
         if ($smartyForceCompile) {
             $smarty->setForceCompile(true);
-        }
-        if (!empty($smartyStaticClasses)) {
-            $this->smartyStaticClasses = $smartyStaticClasses;
         }
         
         $this->smarty->registerFilter('pre', [$this, 'applyTplModifiers']);
@@ -328,8 +319,6 @@ class Design
         }
         
         $this->registerSmartyPlugins();
-        $this->regiserAllowedPhpFunctions();
-        $this->registerStaticClasses();
 
         $this->setSmartyTemplatesDir();
 
@@ -363,24 +352,16 @@ class Design
     
     private function registerSmartyPlugins()
     {
-   
         foreach ($this->smartyModifiers as $tag => $callback) {
-            if (!isset($this->smarty->registered_plugins['modifier'][$tag])) {
-                $this->smarty->registerPlugin('modifier', $tag, $callback);
-            }
+            $this->smarty->registerPlugin('modifier', $tag, $callback);
             unset($this->smartyModifiers[$tag]);
         }
-
+        
         foreach ($this->smartyFunctions as $tag => $callback) {
-            if (!isset($this->smarty->registered_plugins['function'][$tag])) {
-                $this->smarty->registerPlugin('function', $tag, $callback);
-            }
+            $this->smarty->registerPlugin('function', $tag, $callback);
             unset($this->smartyFunctions[$tag]);
         }
-    }
 
-    private function regiserAllowedPhpFunctions()
-    {
         foreach ($this->allowedPhpFunctions as $func) {
             if (function_exists($func)) {
                 foreach (['modifier', 'function'] as $type) {
@@ -389,26 +370,6 @@ class Design
                     }
                 }
             }
-        }
-        
-    }
-
-    private function registerStaticClasses()
-    {
-        foreach ($this->smartyStaticClasses as $staticClass) {
-            $className = ltrim($staticClass, '\\');
-            if (!isset($this->smarty->registered_classes[$staticClass]) && class_exists($className)) {
-                $this->smarty->registerClass($staticClass, $className);
-            }
-        }
-    }
-
-    public function addStaticClass($class)
-    {
-        if (!empty($class)) {
-            $this->smartyStaticClasses[] = $class;
-        } else {
-            throw new \InvalidArgumentException('Class name cannot be empty');
         }
     }
 
@@ -425,7 +386,7 @@ class Design
 
     public function getModuleTemplatesDir()
     {
-        return rtrim((string)$this->moduleTemplateDir , '/');
+        return rtrim($this->moduleTemplateDir??'' , '/');
     }
 
     /*Установка директории файлов шаблона(отображения)*/

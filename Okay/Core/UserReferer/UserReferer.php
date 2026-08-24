@@ -60,7 +60,7 @@ class UserReferer
         } elseif (($referer = Request::getReferer()) && !$this->isInternalUrl($referer)) {
             $userReferer = [
                 'medium' => self::CHANNEL_REFERRAL,
-                'source' => parse_url($referer, PHP_URL_HOST),
+                'source' => parse_url((string) $referer, PHP_URL_HOST),
             ];
         } else {
             $userReferer = [
@@ -80,7 +80,7 @@ class UserReferer
     
     public function isInternalUrl($url)
     {
-        return parse_url($url, PHP_URL_HOST) == Request::getDomain();
+        return parse_url((string) $url, PHP_URL_HOST) == Request::getDomain();
     }
     
     public static function getUserReferer()

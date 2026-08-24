@@ -14,6 +14,7 @@ class FrontTranslations
     private $_entityFactory;
     private $_languages;
     private $_modules;
+    private $_translations;
     
     public function __construct(EntityFactory $entityFactory, Languages $languages, Modules $modules, $debugTranslation = false)
     {
@@ -32,7 +33,7 @@ class FrontTranslations
         /** @var TranslationsEntity $translations */
         $translations = $this->_entityFactory->get(TranslationsEntity::class);
         foreach ($translations->find(['lang' => $langLabel]) as $var => $translation) {
-            $this->$var = $translation->value;
+            $this->_translations[$var] = $translation->value;
         }
     }
     
@@ -50,7 +51,7 @@ class FrontTranslations
                 $translation = $res->lang_en->value;
             }
 
-            $this->$var = $translation;
+            $this->_translations[$var] = $translation;
 
             // Если включили дебаг переводов, выведим соответствующее сообщение на неизвестный перевод
             if ($this->_debugTranslation === true) {
@@ -64,12 +65,12 @@ class FrontTranslations
     
     public function getTranslation($var)
     {
-        return $this->$var;
+        return $this->_translations[$var];
     }
     
     public function addTranslation($var, $translation)
     {
-        $var = preg_replace('~[^\w]~', '', $var);
-        $this->$var = $translation;
+        $var = preg_replace('~[^\w]~', '', (string) $var);
+        $this->_translations[$var] = $translation;
     }
 }

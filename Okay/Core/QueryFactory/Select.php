@@ -5,12 +5,10 @@ namespace Okay\Core\QueryFactory;
 
 
 use Aura\SqlQuery\Common\SelectInterface;
-use Aura\SqlQuery\Common\SubselectInterface;
 use Aura\SqlQuery\QueryInterface;
 use Aura\SqlQuery\Common\Select as AuraSelect;
 
-class Select extends AbstractQuery implements SelectInterface, SubselectInterface
-{
+class Select extends AbstractQuery implements SelectInterface{
     /**
      * @var QueryInterface|AuraSelect
      */
@@ -109,15 +107,15 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
         return $this;
     }
 
-    public function having($cond)
+    public function having($cond, array $bind = [])
     {
-        $this->queryObject->having($cond);
+        $this->queryObject->having(...func_get_args());
         return $this;
     }
 
-    public function orHaving($cond)
+    public function orHaving($cond, array $bind = [])
     {
-        $this->queryObject->orHaving($cond);
+        $this->queryObject->orHaving(...func_get_args());
         return $this;
     }
 
@@ -196,13 +194,13 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
         return $this;
     }
 
-    public function where($cond, ...$binds)
+    public function where($cond, array $binds = [])
     {
         $this->queryObject->where(...func_get_args());
         return $this;
     }
 
-    public function orWhere($cond)
+    public function orWhere($cond, array $bind = [])
     {
         $this->queryObject->orWhere(...func_get_args());
         return $this;
@@ -298,4 +296,19 @@ class Select extends AbstractQuery implements SelectInterface, SubselectInterfac
         return $this;
     }
 
+    public function reset()
+    {
+        $this->queryObject->reset();
+        return $this;
+    }
+
+    public function hasCol($col)
+    {
+        return $this->queryObject->hasCol($col);
+    }
+
+    public function isDistinct()
+    {
+        return $this->queryObject->isDistinct();
+    }
 }

@@ -95,10 +95,10 @@ $dateTo = $request->get('date_to');
 
 if (!empty($dateFrom) || !empty($dateTo)) {
     if (!empty($dateFrom)) {
-        $filter['date_from'] = date("Y-m-d 00:00:01", strtotime($dateFrom));
+        $filter['date_from'] = date("Y-m-d 00:00:01", strtotime((string) $dateFrom));
     }
     if (!empty($dateTo)) {
-        $filter['date_to'] = date("Y-m-d 23:59:00", strtotime($dateTo));
+        $filter['date_to'] = date("Y-m-d 23:59:00", strtotime((string) $dateTo));
     }
 }
 

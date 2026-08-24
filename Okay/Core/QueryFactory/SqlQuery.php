@@ -97,4 +97,9 @@ class SqlQuery implements QueryInterface
     {
         return $this->statement;
     }
+
+    public function resetFlags()
+    {
+        return $this;
+    }
 }

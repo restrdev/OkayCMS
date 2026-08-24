@@ -38,6 +38,10 @@ class TranslationsEntity extends Entity
 
     /** @var array all translations */
     private $vars = [];
+    /**
+     * @var false
+     */
+    private bool $templateOnly;
 
     public function __construct()
     {
@@ -445,7 +449,7 @@ class TranslationsEntity extends Entity
         $content = "<?php\n\n";
         $content .= "\$lang = [];\n";
         foreach($translations as $label => $translation) {
-            $content .= "\$lang['".$label."'] = '".addcslashes($translation, "\n\r\\\"'")."';\n";
+            $content .= "\$lang['".$label."'] = '".addcslashes((string) $translation, "\n\r\\\"'")."';\n";
         }
         $file = fopen($langFile, 'w');
         fwrite($file, $content);

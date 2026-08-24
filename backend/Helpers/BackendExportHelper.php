@@ -185,7 +185,7 @@ class BackendExportHelper
                     if(isset($featuresValues[$valueId])) {
                         $feature = $featuresValues[$valueId];
                         $tempFeature = $this->featuresEntity->get(intval($feature->feature_id));
-                        $productFeatureValues[$tempFeature->name][] = str_replace(',', '.', trim($feature->value));
+                        $productFeatureValues[$tempFeature->name][] = str_replace(',', '.', trim((string) $feature->value));
                     }
                 }
 

@@ -177,7 +177,7 @@ class BrandsEntity extends Entity
             $brand->url = str_replace('.', '', $brand->url);
         }
 
-        $brand->url = preg_replace("/[\s]+/ui", '', $brand->url);
+        $brand->url = preg_replace("/[\s]+/ui", '', (string) $brand->url);
 
         while ($this->get((string)$brand->url)) {
             if(preg_match('/(.+)([0-9]+)$/', $brand->url, $parts)) {

@@ -55,7 +55,7 @@ class GD extends AbstractResize
         if ($srcColors > 0 && $srcColors <= 256) {
             $dstImg = imagecreate($dstW, $dstH);
         } else {
-            $dstImg = imagecreatetruecolor($dstW, $dstH);
+            $dstImg = imagecreatetruecolor((int) round($dstW), (int) round($dstH));
         }
 
         if (empty($dstImg)) {
@@ -92,8 +92,8 @@ class GD extends AbstractResize
         }
 
         // resample the image with new sizes
-        if (!imagecopyresampled($dstImg, $srcImg, 0, 0, 0, 0, $dstW, $dstH, $srcW, $srcH)) {
-            return false;
+        if (!imagecopyresampled($dstImg, $srcImg, 0, 0, 0, 0, (int) round($dstW), (int) round($dstH), $srcW, $srcH)) {
+                return false;
         }
 
         // Watermark
@@ -104,8 +104,8 @@ class GD extends AbstractResize
             $owidth = imagesx($overlay);
             $oheight = imagesy($overlay);
 
-            $watermarkX = min(($dstW-$owidth)*$this->watermarkOffsetX/100, $dstW);
-            $watermarkY = min(($dstH-$oheight)*$this->watermarkOffsetY/100, $dstH);
+            $watermarkX = (int) round(min(($dstW-$owidth)*$this->watermarkOffsetX/100, $dstW));
+            $watermarkY = (int) round(min(($dstH-$oheight)*$this->watermarkOffsetY/100, $dstH));
 
             imagecopy($dstImg, $overlay, $watermarkX, $watermarkY, 0, 0, $owidth, $oheight);
         }

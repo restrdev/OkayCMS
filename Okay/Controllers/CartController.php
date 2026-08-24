@@ -187,7 +187,7 @@ class CartController extends AbstractController
         /*Рабтаем с товарами в корзине*/
         if ($cart->isEmpty === false) {
             if (isset($_GET['coupon_code'])) {
-                $couponCode = trim($request->get('coupon_code', 'string'));
+                $couponCode = trim((string) $request->get('coupon_code', 'string'));
                 if (empty($couponCode)) {
                     $cart->applyCoupon('');
                     if ($this->request->get('action') == 'coupon_apply') {
