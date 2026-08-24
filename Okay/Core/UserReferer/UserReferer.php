@@ -5,9 +5,6 @@ namespace Okay\Core\UserReferer;
 
 
 use Okay\Core\Request;
-use Snowplow\RefererParser\Config\JsonConfigReader;
-use Snowplow\RefererParser\Parser;
-use Snowplow\RefererParser\Referer;
 
 class UserReferer
 {
@@ -18,12 +15,12 @@ class UserReferer
     const CHANNEL_REFERRAL = 'referral';
     const CHANNEL_UNKNOWN = 'unknown';
     
-    /** @var Parser */
+    /** @var RefererParser */
     private $parser;
     
     private static $userReferer;
     
-    public function __construct(Parser $parser)
+    public function __construct(RefererParser $parser)
     {
         $this->parser = $parser;
     }
@@ -37,26 +34,10 @@ class UserReferer
         );
 
         if ($referer->isKnown()) {
-            switch ($referer->getMedium()) {
-                case self::CHANNEL_EMAIL :
-                    $userReferer = [
-                        'medium' => self::CHANNEL_EMAIL,
-                        'source' => $referer->getSource(),
-                    ];
-                    break;
-                case self::CHANNEL_SEARCH :
-                    $userReferer = [
-                        'medium' => self::CHANNEL_SEARCH,
-                        'source' => $referer->getSource(),
-                    ];
-                    break;
-                case self::CHANNEL_SOCIAL :
-                    $userReferer = [
-                        'medium' => self::CHANNEL_SOCIAL,
-                        'source' => $referer->getSource(),
-                    ];
-                    break;
-            }
+            $userReferer = [
+                'medium' => $referer->getMedium(),
+                'source' => $referer->getSource(),
+            ];
         } elseif (($referer = Request::getReferer()) && !$this->isInternalUrl($referer)) {
             $userReferer = [
                 'medium' => self::CHANNEL_REFERRAL,
@@ -92,10 +73,5 @@ class UserReferer
         }
         
         return null;
-    }
-    
-    public static function createConfigReader()
-    {
-        return new JsonConfigReader(__DIR__ . '/data/referers.json');
     }
 }

@@ -45,7 +45,6 @@
         "aura/sql": "^3.0 || ^4.0 || ^5.0 || ^6.0",
         "haydenpierce/class-finder": "^0.4 || ^0.5",
         "axy/sourcemap": "^0.1.5 || ^1.0",
-        "snowplow/referer-parser": "^0.2.0",
         "giggsey/libphonenumber-for-php": "^8.13 || ^9.0",
         "rosell-dk/webp-convert": "^2.9",
         "psr/container": "^1.1 || ^2.0",

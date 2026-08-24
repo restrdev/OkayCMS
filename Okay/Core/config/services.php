@@ -45,7 +45,7 @@ use Okay\Core\Modules\Extender\ChainExtender;
 use Okay\Core\Modules\Extender\QueueExtender;
 use Okay\Core\Modules\Extender\ExtenderFacade;
 use Okay\Core\UserReferer\UserReferer;
-use Snowplow\RefererParser\Parser;
+use Okay\Core\UserReferer\RefererParser;
 use Okay\Core\TplMod\Parser as TplParser;
 
 $services = [
@@ -505,16 +505,15 @@ $services = [
             new SR(Response::class),
         ],
     ],
-    Parser::class => [
-        'class' => Parser::class,
+    RefererParser::class => [
+        'class' => RefererParser::class,
         'arguments' => [
-            UserReferer::createConfigReader(),
         ],
     ],
     UserReferer::class => [
         'class' => UserReferer::class,
         'arguments' => [
-            new SR(Parser::class),
+            new SR(RefererParser::class),
         ],
     ],
     Phone::class => [
