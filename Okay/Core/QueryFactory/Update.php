@@ -9,6 +9,8 @@ use Aura\SqlQuery\Common\Update as AuraUpdate;
 
 class Update extends AbstractQuery implements QueryInterface
 {
+    use BindPlaceholdersTrait;
+
     /**
      * @var QueryInterface|AuraUpdate
      */
@@ -27,19 +29,21 @@ class Update extends AbstractQuery implements QueryInterface
 
     public function where($cond, ...$binds)
     {
-        $this->queryObject->where(...func_get_args());
+        list($cond, $named) = $this->bindPlaceholders($cond, $binds);
+        $this->queryObject->where($cond, $named);
         return $this;
     }
 
-    public function orWhere($cond)
+    public function orWhere($cond, ...$binds)
     {
-        $this->queryObject->orWhere(...func_get_args());
+        list($cond, $named) = $this->bindPlaceholders($cond, $binds);
+        $this->queryObject->orWhere($cond, $named);
         return $this;
     }
 
-    public function col($col)
+    public function col($col, ...$value)
     {
-        $this->queryObject->col(...func_get_args());
+        $this->queryObject->col($col, ...$value);
         return $this;
     }
 
