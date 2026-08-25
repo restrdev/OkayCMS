@@ -142,6 +142,10 @@ class Phone
             $numberFormat = $settings->get('phone_default_format');
         }
 
+        if (!$numberFormat instanceof PhoneNumberFormat) {
+            $numberFormat = PhoneNumberFormat::from((int) $numberFormat);
+        }
+
         $phoneObject = $phoneUtil->parse($phoneNumber, $defaultRegion);
         return $phoneUtil->format($phoneObject, $numberFormat);
     }
