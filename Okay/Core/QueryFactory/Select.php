@@ -114,15 +114,19 @@ class Select extends AbstractQuery implements SelectInterface
         return $this;
     }
 
-    public function having($cond, ...$binds)
+    public function having($cond, $bind = [])
     {
+        $binds = array_slice(func_get_args(), 1);
+
         list($cond, $named) = $this->bindPlaceholders($cond, $binds);
         $this->queryObject->having($cond, $named);
         return $this;
     }
 
-    public function orHaving($cond, ...$binds)
+    public function orHaving($cond, $bind = [])
     {
+        $binds = array_slice(func_get_args(), 1);
+
         list($cond, $named) = $this->bindPlaceholders($cond, $binds);
         $this->queryObject->orHaving($cond, $named);
         return $this;
@@ -203,15 +207,19 @@ class Select extends AbstractQuery implements SelectInterface
         return $this;
     }
 
-    public function where($cond, ...$binds)
+    public function where($cond, $bind = [])
     {
+        $binds = array_slice(func_get_args(), 1);
+
         list($cond, $named) = $this->bindPlaceholders($cond, $binds);
         $this->queryObject->where($cond, $named);
         return $this;
     }
 
-    public function orWhere($cond, ...$binds)
+    public function orWhere($cond, $bind = [])
     {
+        $binds = array_slice(func_get_args(), 1);
+
         list($cond, $named) = $this->bindPlaceholders($cond, $binds);
         $this->queryObject->orWhere($cond, $named);
         return $this;

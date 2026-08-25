@@ -27,23 +27,27 @@ class Update extends AbstractQuery implements QueryInterface
         return $this;
     }
 
-    public function where($cond, ...$binds)
+    public function where($cond, $bind = [])
     {
+        $binds = array_slice(func_get_args(), 1);
+
         list($cond, $named) = $this->bindPlaceholders($cond, $binds);
         $this->queryObject->where($cond, $named);
         return $this;
     }
 
-    public function orWhere($cond, ...$binds)
+    public function orWhere($cond, $bind = [])
     {
+        $binds = array_slice(func_get_args(), 1);
+
         list($cond, $named) = $this->bindPlaceholders($cond, $binds);
         $this->queryObject->orWhere($cond, $named);
         return $this;
     }
 
-    public function col($col, ...$value)
+    public function col($col)
     {
-        $this->queryObject->col($col, ...$value);
+        $this->queryObject->col(...func_get_args());
         return $this;
     }
 
