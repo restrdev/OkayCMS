@@ -3,31 +3,5 @@
   "vendor": {
     "email": "info@okay-cms.com",
     "site": "https://okay-cms.com"
-  },
-
-  "modifications": {
-    "backend": [
-      {
-        "file": "settings_general.tpl",
-        "changes": [
-          {
-            "find": "name=\"captcha_callback\"",
-            "closestFind": "col-",
-            "appendAfter": "activate_captcha_checkbox.tpl"
-          }
-        ]
-      }
-    ],
-    "front": [
-      {
-        "file": "main.tpl",
-        "changes": [
-          {
-            "find": "block block--boxed block--border",
-            "appendAfter": "1111"
-          }
-        ]
-      }
-    ]
   }
 }
