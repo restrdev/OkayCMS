@@ -55,12 +55,14 @@ trait BindPlaceholdersTrait
 
             $value = array_shift($binds);
 
-            // Підзапит як значення: підставляємо його SQL і переносимо прив'язки
+            // Підзапит як значення: передаємо як іменований бінд, щоб Aura сама
+            // підставила SQL підзапиту ПІСЛЯ квотування імен у зовнішній умові
+            // (інакше вже проквотовані ідентифікатори підзапиту квотуються вдруге,
+            // що ламає плейсхолдери, розташовані далі в тексті умови)
             if ($value instanceof QueryInterface) {
-                $parts[$k] = $value->getStatement();
-                foreach ($value->getBindValues() as $subName => $subValue) {
-                    $named[$subName] = $subValue;
-                }
+                $name = $this->nextBindName();
+                $named[$name] = $value;
+                $parts[$k] = ':' . $name;
                 continue;
             }
 
