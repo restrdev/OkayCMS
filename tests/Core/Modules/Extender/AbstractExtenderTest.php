@@ -22,7 +22,9 @@ class AbstractExtenderTest extends TestCase
 
         $reflector = new \ReflectionClass($abstractExtender);
         $property = $reflector->getProperty('deprecatedMethods');
-        $property->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $property->setAccessible(true);
+        }
 
         $abstractExtender->setDeprecated($config);
 
@@ -59,7 +61,9 @@ class AbstractExtenderTest extends TestCase
 
         $reflector = new \ReflectionClass($abstractExtender);
         $property = $reflector->getProperty('triggers');
-        $property->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $property->setAccessible(true);
+        }
 
         $abstractExtender->newExtension(
             'Okay\ClassTest1',
@@ -68,7 +72,7 @@ class AbstractExtenderTest extends TestCase
             'testMethod2');
 
         $this->assertEquals($property->getValue(), $expectedResult);
-        $property->setValue([]);
+        $property->setValue(null, []);
     }
 
     public function testCompileTrigger()
@@ -78,7 +82,9 @@ class AbstractExtenderTest extends TestCase
 
         $reflector = new \ReflectionClass($abstractExtender);
         $method = $reflector->getMethod('compileTrigger');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $actualResult = $method->invoke($abstractExtender, 'Okay\TestClass', 'testMethod');
 
@@ -97,7 +103,9 @@ class AbstractExtenderTest extends TestCase
 
         $reflector = new \ReflectionClass($abstractExtender);
         $property = $reflector->getProperty('deprecatedMethods');
-        $property->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $property->setAccessible(true);
+        }
         $property->setValue($abstractExtender, [
             'Okay\TestClass1::testMethod1' => [
                 ['Okay\TestClass1', 'testMethod1'],
@@ -110,20 +118,23 @@ class AbstractExtenderTest extends TestCase
         ]);
 
         $method = $reflector->getMethod('checkAndCorrectDeprecatedMethod');
-        $method->setAccessible(true);
-
-        switch ($error) {
-            case E_USER_WARNING:
-                $this->expectWarning();
-                break;
-
-            case E_USER_DEPRECATED:
-                $this->expectDeprecation();
-                break;
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
         }
 
-        $actualResult = $method->invoke($abstractExtender, $trigger);
+        $actualError = null;
+        set_error_handler(function ($errno, $errstr) use (&$actualError) {
+            $actualError = $errno;
+            return true;
+        });
 
+        try {
+            $actualResult = $method->invoke($abstractExtender, $trigger);
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertSame($error === false ? null : $error, $actualError);
         $this->assertEquals($actualResult, $expectedResult);
     }
 
@@ -141,7 +152,9 @@ class AbstractExtenderTest extends TestCase
 
         $reflector = new \ReflectionClass($abstractExtender);
         $method = $reflector->getMethod('validateExtension');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $actualResult = null;
         try {
@@ -166,8 +179,10 @@ class AbstractExtenderTest extends TestCase
 
         $reflector = new \ReflectionClass($abstractExtender);
         $property = $reflector->getProperty('triggers');
-        $property->setAccessible(true);
-        $property->setValue([
+        if (PHP_VERSION_ID < 80100) {
+            $property->setAccessible(true);
+        }
+        $property->setValue(null, [
             'Okay\TestClass::testMethod' => ['test']
         ]);
 

@@ -27,7 +27,9 @@ class MetaRobotsHelperTest extends TestCase
         // Т.к. метод приватный, доступ к нему получаем через рефлексию
         $reflector = new \ReflectionClass(MetaRobotsHelper::class);
         $method = $reflector->getMethod('getBaseCatalogRobots');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $metaRobotsHelper = new MetaRobotsHelper;
 
@@ -195,7 +197,9 @@ class MetaRobotsHelperTest extends TestCase
         // Т.к. метод приватный, доступ к нему получаем через рефлексию
         $reflector = new \ReflectionClass(MetaRobotsHelper::class);
         $method = $reflector->getMethod('getCatalogRobotsExecutor');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $metaRobotsHelper = new MetaRobotsHelper;
 

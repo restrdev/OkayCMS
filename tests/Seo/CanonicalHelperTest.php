@@ -30,7 +30,9 @@ class CanonicalHelperTest extends TestCase
         // Т.к. метод приватный, доступ к нему получаем через рефлексию
         $reflector = new \ReflectionClass(CanonicalHelper::class);
         $method = $reflector->getMethod('getCatalogCanonicalDataExecutor');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $canonicalHelper = new CanonicalHelper;
 
@@ -55,7 +57,9 @@ class CanonicalHelperTest extends TestCase
         // Т.к. метод приватный, доступ к нему получаем через рефлексию
         $reflector = new \ReflectionClass(CanonicalHelper::class);
         $method = $reflector->getMethod('getBaseCatalogCanonicalData');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $canonicalHelper = new CanonicalHelper;
 

@@ -67,7 +67,9 @@ class ModulesInstallerTest extends TestCase
         // Т.к. метод приватный, доступ к нему получаем через рефлексию
         $reflector = new \ReflectionClass(Installer::class);
         $method = $reflector->getMethod('getUpdateMethods');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $installer = new Installer($entityFactoryStub, $moduleStub);
 
