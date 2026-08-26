@@ -141,12 +141,33 @@ class Phone
         if ($numberFormat === null) {
             $numberFormat = $settings->get('phone_default_format');
         }
-
-        if (!$numberFormat instanceof PhoneNumberFormat) {
-            $numberFormat = PhoneNumberFormat::from((int) $numberFormat);
-        }
+        $numberFormat = self::normalizeFormat($numberFormat);
 
         $phoneObject = $phoneUtil->parse($phoneNumber, $defaultRegion);
         return $phoneUtil->format($phoneObject, $numberFormat);
+    }
+
+    /**
+     * @param int|PhoneNumberFormat $numberFormat
+     * @return int|PhoneNumberFormat
+     */
+    private static function normalizeFormat($numberFormat)
+    {
+        if (function_exists('enum_exists') && enum_exists(PhoneNumberFormat::class)) {
+            if (!$numberFormat instanceof PhoneNumberFormat) {
+                $numberFormat = PhoneNumberFormat::from((int) $numberFormat);
+            }
+            return $numberFormat;
+        }
+
+        return (int) $numberFormat;
+    }
+
+    /**
+     * @param int|PhoneNumberFormat $numberFormat
+     */
+    public static function formatValue($numberFormat): int
+    {
+        return is_int($numberFormat) ? $numberFormat : $numberFormat->value;
     }
 }

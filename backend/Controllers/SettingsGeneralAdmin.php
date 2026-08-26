@@ -44,19 +44,19 @@ class SettingsGeneralAdmin extends IndexAdmin
         $this->design->assign('phone_regions_names', $countries);
         $this->design->assign('phone_formats', [
             [
-                'value' => PhoneNumberFormat::E164->value,
+                'value' => Phone::formatValue(PhoneNumberFormat::E164),
                 'label' => $phone->format($phoneExample, PhoneNumberFormat::E164),
             ],
             [
-                'value' => PhoneNumberFormat::INTERNATIONAL->value,
+                'value' => Phone::formatValue(PhoneNumberFormat::INTERNATIONAL),
                 'label' => $phone->format($phoneExample, PhoneNumberFormat::INTERNATIONAL),
             ],
             [
-                'value' => PhoneNumberFormat::NATIONAL->value,
+                'value' => Phone::formatValue(PhoneNumberFormat::NATIONAL),
                 'label' => $phone->format($phoneExample, PhoneNumberFormat::NATIONAL),
             ],
             [
-                'value' => PhoneNumberFormat::RFC3966->value,
+                'value' => Phone::formatValue(PhoneNumberFormat::RFC3966),
                 'label' => $phone->format($phoneExample, PhoneNumberFormat::RFC3966),
             ],
         ]);
