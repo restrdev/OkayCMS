@@ -8,10 +8,10 @@ use Okay\Core\Modules\Extender\ExtenderFacade;
 
 class Discount
 {
-    /** @var int|null Заполняется в DiscountsHelper::buildFromDB() при загрузке скидки из БД */
+    /** @var int|null */
     public $id;
 
-    /** @var int|null Заполняется в DiscountsHelper::buildFromDB() при загрузке скидки из БД */
+    /** @var int|null */
     public $position;
 
     /** @var string */
