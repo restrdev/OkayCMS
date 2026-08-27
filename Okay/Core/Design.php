@@ -328,7 +328,7 @@ class Design
         }
         
         $this->registerSmartyPlugins();
-        $this->regiserAllowedPhpFunctions();
+        $this->registerAllowedPhpFunctions();
         $this->registerStaticClasses();
 
         $this->setSmartyTemplatesDir();
@@ -379,26 +379,78 @@ class Design
         }
     }
 
-    private function regiserAllowedPhpFunctions()
+    private function registerAllowedPhpFunctions()
     {
         foreach ($this->allowedPhpFunctions as $func) {
-            if (function_exists($func)) {
-                foreach (['modifier', 'function'] as $type) {
-                    if (!isset($this->smarty->registered_plugins[$type][$func])) {
-                        $this->smarty->registerPlugin($type, $func, $func);
-                    }
+            if (!function_exists($func)) {
+                continue;
+            }
+
+            $callback = $this->wrapIfPassedByReference($func);
+
+            foreach (['modifier', 'function'] as $type) {
+                if (!isset($this->smarty->registered_plugins[$type][$func])) {
+                    $this->smarty->registerPlugin($type, $func, $callback);
                 }
             }
         }
-        
+    }
+
+    /**
+     * Функции, первый параметр которых принимается по ссылке (reset и подобные),
+     * нельзя регистрировать плагином напрямую: Smarty вызывает плагины через
+     * call_user_func_array(), то есть по значению, и PHP 8 бросает
+     * "Argument #1 must be passed by reference, value given", а вместо результата
+     * в шаблон попадает сам массив. Оборачиваем такие функции, чтобы ссылка
+     * бралась от локальной копии внутри обёртки.
+     *
+     * @param string $func
+     * @return string|\Closure
+     */
+    private function wrapIfPassedByReference($func)
+    {
+        try {
+            $parameters = (new \ReflectionFunction($func))->getParameters();
+        } catch (\ReflectionException $e) {
+            return $func;
+        }
+
+        if (empty($parameters) || !$parameters[0]->isPassedByReference()) {
+            return $func;
+        }
+
+        return static function ($value, ...$args) use ($func) {
+            return $func($value, ...$args);
+        };
     }
 
     private function registerStaticClasses()
     {
         foreach ($this->smartyStaticClasses as $staticClass) {
             $className = ltrim($staticClass, '\\');
-            if (!isset($this->smarty->registered_classes[$staticClass]) && class_exists($className)) {
-                $this->smarty->registerClass($staticClass, $className);
+            if (!class_exists($className)) {
+                continue;
+            }
+
+            // Шаблоны обращаются к статическому классу и по полному имени
+            // (Okay\Core\UserReferer\UserReferer::CHANNEL_EMAIL), и по короткому
+            // (BannerImageSettingsDTO::SHOW_DEFAULT). Регистрируем обе формы:
+            // короткое имя иначе резолвится в глобальное пространство имён
+            // и падает с "Class not found".
+            $names = [$staticClass];
+
+            $separatorPosition = strrpos($className, '\\');
+            $shortName = $separatorPosition === false
+                ? $className
+                : substr($className, $separatorPosition + 1);
+            if (!in_array($shortName, $names, true)) {
+                $names[] = $shortName;
+            }
+
+            foreach ($names as $name) {
+                if (!isset($this->smarty->registered_classes[$name])) {
+                    $this->smarty->registerClass($name, $className);
+                }
             }
         }
     }

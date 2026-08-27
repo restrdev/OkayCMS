@@ -299,7 +299,7 @@ class ModulesInstallerTest extends TestCase
         
     }
 
-    public function updateDataProvider() : array
+    public static function updateDataProvider() : array
     {
         return [
             [
@@ -340,7 +340,7 @@ class ModulesInstallerTest extends TestCase
         ];
     }
     
-    public function installDataProvider() : array
+    public static function installDataProvider() : array
     {
         return [
             [
@@ -361,7 +361,7 @@ class ModulesInstallerTest extends TestCase
         ];
     }
     
-    public function getUpdateMethodsDataProvider() : array
+    public static function getUpdateMethodsDataProvider() : array
     {
         return [
             [

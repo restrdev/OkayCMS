@@ -119,7 +119,7 @@ class AuthorsEntity extends Entity
             ->bindValue('author_id', $ids);
         $this->db->query($update);
 
-        parent::delete($ids);
+        return parent::delete($ids);
     }
 
     public function duplicate($authorId)

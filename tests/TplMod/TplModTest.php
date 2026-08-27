@@ -74,7 +74,7 @@ class TplModTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedResult, $resultHtml);
     }
     
-    public function applyModDataProvider(): array
+    public static function applyModDataProvider(): array
     {
         return [
             [

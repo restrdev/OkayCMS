@@ -191,7 +191,7 @@ class AbstractExtenderTest extends TestCase
         $this->assertEquals($actualResult, $expectedResult);
     }
 
-    public function deprecatedMethodsDataProvider()
+    public static function deprecatedMethodsDataProvider()
     {
         return [
             'Not empty config' => [
@@ -223,7 +223,7 @@ class AbstractExtenderTest extends TestCase
         ];
     }
 
-    public function newExtensionsDataProvider()
+    public static function newExtensionsDataProvider()
     {
         return [
             'With deprecated method' => [
@@ -251,7 +251,7 @@ class AbstractExtenderTest extends TestCase
         ];
     }
 
-    public function extensionsValidateDataProvider()
+    public static function extensionsValidateDataProvider()
     {
         return [
             'Wrong expandable method' => [
@@ -319,7 +319,7 @@ class AbstractExtenderTest extends TestCase
         ];
     }
 
-    public function triggersDataProvider()
+    public static function triggersDataProvider()
     {
         return [
             'Correct string trigger' => [
@@ -340,7 +340,7 @@ class AbstractExtenderTest extends TestCase
         ];
     }
 
-    public function correctDeprecatedMethodsDataProvider()
+    public static function correctDeprecatedMethodsDataProvider()
     {
         return [
             'Deprecated method with replace' => [

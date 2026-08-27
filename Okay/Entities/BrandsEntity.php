@@ -216,7 +216,7 @@ class BrandsEntity extends Entity
             ->bindValue('brands_ids', $ids);
         $this->db->query($update);
 
-        parent::delete($ids);
+        return parent::delete($ids);
     }
 
     public function duplicate($brandId)

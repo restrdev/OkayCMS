@@ -102,6 +102,24 @@ class Cart
     public $discounts = [];
 
     /**
+     * @var array
+     * Purchases prepared for writing to DB, filled by CartHelper::prepareCart()
+     */
+    public $purchasesToDB = [];
+
+    /**
+     * @var array
+     * Discounts prepared for writing to DB, filled by CartHelper::prepareDiscounts()
+     */
+    public $discountsToDB = [];
+
+    /**
+     * @var array
+     * Lang parts of discounts prepared for writing to DB, filled by CartHelper::prepareDiscounts()
+     */
+    public $langDiscountsToDB = [];
+
+    /**
      * @var bool
      * Whether the cart is currently empty
      */

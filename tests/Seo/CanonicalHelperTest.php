@@ -94,7 +94,7 @@ class CanonicalHelperTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function getCatalogFeaturesFilterDataProvider() : array
+    public static function getCatalogFeaturesFilterDataProvider() : array
     {
         return [
             [ // Страница фильтров, в настройках ведет на страницу без фильтра, canonical на страницу без фильтра
@@ -175,7 +175,7 @@ class CanonicalHelperTest extends TestCase
         ];
     }
     
-    public function getCatalogBrandsFilterDataProvider() : array
+    public static function getCatalogBrandsFilterDataProvider() : array
     {
         return [
             [ // Страница фильтров, в настройках ведет на страницу без фильтра, canonical на страницу без фильтра
@@ -246,7 +246,7 @@ class CanonicalHelperTest extends TestCase
         ];
     }
     
-    public function getCatalogFeaturesBrandsFilterDataProvider() : array
+    public static function getCatalogFeaturesBrandsFilterDataProvider() : array
     {
         return [
             [ // Страница фильтров, в настройках ведет на страницу без фильтра и без бренда, canonical на страницу без фильтра
@@ -370,7 +370,7 @@ class CanonicalHelperTest extends TestCase
         ];
     }
     
-    public function getCatalogPaginationFeaturesBrandsFilterDataProvider() : array
+    public static function getCatalogPaginationFeaturesBrandsFilterDataProvider() : array
     {
         return [
             [ // Страница фильтров и пагинации, в настройках ведет на первую страницу без фильтра, canonical на первую страницу без фильтра
@@ -623,7 +623,7 @@ class CanonicalHelperTest extends TestCase
         ];
     }
 
-    public function getBaseCatalogPaginationDataProvider() : array
+    public static function getBaseCatalogPaginationDataProvider() : array
     {
         return [
             [ // Страница пагинации, canonical на первую
@@ -830,7 +830,7 @@ class CanonicalHelperTest extends TestCase
         ];
     }
     
-    public function getBaseCatalogOtherFiltersDataProvider() : array
+    public static function getBaseCatalogOtherFiltersDataProvider() : array
     {
         return [
             [ // Страница фильтров, в настройках ведет на страницу без фильтра, canonical на страницу без фильтра
@@ -953,7 +953,7 @@ class CanonicalHelperTest extends TestCase
      * Тест страницы пагинации результатов фильтрации
      * @return array[]
      */
-    public function getBaseCatalogOtherFiltersPaginationDataProvider() : array
+    public static function getBaseCatalogOtherFiltersPaginationDataProvider() : array
     {
         return [
             [ // Страница пагинации и доп. фильтра, настройках без пагинации без доп. фильтра canonical на первую без фильтра
@@ -1143,7 +1143,7 @@ class CanonicalHelperTest extends TestCase
      * Немного кейсов определения каноникла в категории при разных условиях
      * @return array[]
      */
-    public function getCatalogPaginationFullFiltersDataProvider() : array
+    public static function getCatalogPaginationFullFiltersDataProvider() : array
     {
         return [
             [

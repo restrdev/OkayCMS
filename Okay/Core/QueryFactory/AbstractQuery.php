@@ -116,7 +116,7 @@ abstract class AbstractQuery implements QueryInterface
         return $this->queryObject->getStatement();
     }
 
-        public function resetFlags()
+    public function resetFlags()
     {
         $this->queryObject->resetFlags();
         return $this;

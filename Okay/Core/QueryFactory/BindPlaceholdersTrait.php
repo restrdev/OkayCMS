@@ -40,6 +40,15 @@ trait BindPlaceholdersTrait
             return [$cond, $binds];
         }
 
+        if (strpos((string) $cond, '?') === false
+            && count($binds) === 1
+            && isset($binds[0])
+            && is_array($binds[0])
+            && $this->isAssocBinds($binds[0])
+        ) {
+            return [$cond, $binds[0]];
+        }
+
         // Якщо "?" в умові немає, перетворювати нічого
         if (strpos((string) $cond, '?') === false) {
             return [$cond, $binds];

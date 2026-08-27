@@ -8,6 +8,12 @@ use Okay\Core\Modules\Extender\ExtenderFacade;
 
 class Discount
 {
+    /** @var int|null Заполняется в DiscountsHelper::buildFromDB() при загрузке скидки из БД */
+    public $id;
+
+    /** @var int|null Заполняется в DiscountsHelper::buildFromDB() при загрузке скидки из БД */
+    public $position;
+
     /** @var string */
     public $sign;
 

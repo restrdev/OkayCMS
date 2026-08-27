@@ -77,7 +77,7 @@ class ModuleCreateCommand extends Command
                 $this->output->writeln('<error>Please enter module name<error>');
             }
 
-            $module = $this->formatCamelCase($module, 'camel');
+            $module = $this->formatCamelCase($module);
 
             $valid = preg_match('/^[A-Z][a-zA-Z0-9]*$/', $module);
             if (!$valid) {

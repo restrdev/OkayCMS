@@ -126,7 +126,7 @@ class GD extends AbstractResize
             case 'image/jpeg':
                 return imageJpeg($dstImg, $dstFile, $this->imageQuality);
             case 'image/gif':
-                return imageGif($dstImg, $dstFile, $this->imageQuality);
+                return imageGif($dstImg, $dstFile);
             case 'image/png':
                 imagesavealpha($dstImg, true);
                 return imagePng($dstImg, $dstFile, $this->imageQuality);

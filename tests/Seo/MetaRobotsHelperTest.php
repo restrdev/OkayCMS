@@ -210,7 +210,7 @@ class MetaRobotsHelperTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function getCatalogFeaturesFilterDataProvider() : array
+    public static function getCatalogFeaturesFilterDataProvider() : array
     {
         return [
             [
@@ -339,7 +339,7 @@ class MetaRobotsHelperTest extends TestCase
         ];
     }
     
-    public function getBaseCatalogOtherFiltersDataProvider() : array
+    public static function getBaseCatalogOtherFiltersDataProvider() : array
     {
         return [
             [
@@ -446,7 +446,7 @@ class MetaRobotsHelperTest extends TestCase
      * Немного кейсов определения robots в категории при разных условиях
      * @return array[]
      */
-    public function getCatalogPaginationFullFiltersDataProvider() : array
+    public static function getCatalogPaginationFullFiltersDataProvider() : array
     {
         return [
             [
@@ -956,7 +956,7 @@ class MetaRobotsHelperTest extends TestCase
         ];
     }
     
-    public function setAvailableFeaturesDataProvider() : array
+    public static function setAvailableFeaturesDataProvider() : array
     {
         return [
             [

@@ -64,7 +64,7 @@ class TranslationsHelper
             unset($this->localVars[$langLabel]);
         }
 
-        if (!isset($this->themeVars[$langLabel])) {
+        if (!isset($this->localVars[$langLabel])) {
             $this->localVars[$langLabel] = [];
             $langFile = $this->localLangDir . 'local.' . $langLabel . '.php';
             if (file_exists($langFile)) {

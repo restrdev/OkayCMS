@@ -278,7 +278,9 @@ class FilterHelper
             if (empty($v)) {
                 continue;
             }
-            @list($paramName, $paramValues) = explode('-', (string) $v);
+            $parts = explode('-', (string) $v);
+            $paramName = $parts[0];
+            $paramValues = isset($parts[1]) ? $parts[1] : '';
 
             if ($paramName == 'page') {
                 $currentPage = (string)$paramValues;
@@ -304,7 +306,9 @@ class FilterHelper
             if (empty($v)) {
                 continue;
             }
-            @list($paramName, $paramValues) = explode('-', (string) $v);
+            $parts = explode('-', (string) $v);
+            $paramName = $parts[0];
+            $paramValues = isset($parts[1]) ? $parts[1] : '';
 
             if ($paramName == 'sort') {
                 $currentSort = (string)$paramValues;
@@ -329,7 +333,9 @@ class FilterHelper
             if (empty($v)) {
                 continue;
             }
-            @list($paramName, $paramValues) = explode('-', (string) $v);
+            $parts = explode('-', (string) $v);
+            $paramName = $parts[0];
+            $paramValues = isset($parts[1]) ? $parts[1] : '';
 
             if ($paramName == 'filter') {
                 foreach (explode('_', $paramValues) as $f) {
@@ -417,7 +423,9 @@ class FilterHelper
             if (empty($v)) {
                 continue;
             }
-            @list($paramName, $paramValues) = explode('-', (string) $v);
+            $parts = explode('-', (string) $v);
+            $paramName = $parts[0];
+            $paramValues = isset($parts[1]) ? $parts[1] : '';
 
             if (!in_array($paramName, $this->getNotFeaturesParts())) {
                 if (isset($this->featuresByUrl[$paramName])
@@ -486,7 +494,9 @@ class FilterHelper
             if (empty($v)) {
                 continue;
             }
-            @list($paramName, $paramValues) = explode('-', (string) $v);
+            $parts = explode('-', (string) $v);
+            $paramName = $parts[0];
+            $paramValues = isset($parts[1]) ? $parts[1] : '';
 
             if ($res = $this->userGetMetaArray($paramName, $paramValues)) {
                 $metaArray = array_merge($metaArray, $res);
