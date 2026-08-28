@@ -9,6 +9,7 @@ use Okay\Entities\BrandsEntity;
 use Okay\Entities\ManagersEntity;
 use Okay\Entities\CategoriesEntity;
 use Okay\Entities\ReportStatEntity;
+use Okay\Helpers\Import\Csv;
 
 require_once 'configure.php';
 
@@ -71,7 +72,7 @@ $f = fopen($exportFilesDir.$filename, 'ab');
 
 // Если начали сначала - добавим в первую строку названия колонок
 if ($page == 1) {
-    fputcsv($f, $columnsNames, $columnDelimiter, '"', "\\");
+    Csv::write($f, $columnsNames, $columnDelimiter);
 }
 
 $filter = [];
@@ -113,7 +114,7 @@ if (!empty($category)) {
     $categories_list = cat_tree($categories, $purchases);
 }
 foreach ($categories_list as $c) {
-    fputcsv($f, $c, $columnDelimiter, '"', "\\");
+    Csv::write($f, $c, $columnDelimiter);
 }
 
 $total = [
@@ -122,7 +123,7 @@ $total = [
     'price'=>$totalPrice
 ];
 
-fputcsv($f, $total, $columnDelimiter, '"', "\\");
+Csv::write($f, $total, $columnDelimiter);
 fclose($f);
 
 mb_substitute_character('none');

@@ -3,6 +3,8 @@
 
 namespace Okay\Core;
 
+use Okay\Helpers\Import\Csv;
+
 
 class Import
 {
@@ -74,7 +76,7 @@ class Import
     public function initColumns()
     {
         $f = fopen($this->importFilesDir.$this->import_file, 'r');
-        $this->columns = fgetcsv($f, null, $this->columnDelimiter, '"', "\\");
+        $this->columns = Csv::read($f, $this->columnDelimiter);
         fclose($f);
     }
 

@@ -7,6 +7,7 @@ namespace Okay\Admin\Controllers;
 use Okay\Entities\CategoriesEntity;
 use Okay\Entities\OrderStatusEntity;
 use Okay\Entities\ReportStatEntity;
+use Okay\Helpers\Import\Csv;
 
 class ReportStatsAdmin extends IndexAdmin
 {
@@ -116,7 +117,7 @@ class ReportStatsAdmin extends IndexAdmin
 
         $f = fopen($exportFilesDir.$filename, 'ab');
         if ($page == 1) {
-            fputcsv($f, $columnsNames, $columnDelimiter, '"', "\\");
+            Csv::write($f, $columnsNames, $columnDelimiter);
         }
 
         $filter = [];
@@ -182,7 +183,7 @@ class ReportStatsAdmin extends IndexAdmin
             foreach($columnsNames as $n=>$c) {
                 $str[] = $u->$n;
             }
-            fputcsv($f, $str, $columnDelimiter, '"', "\\");
+            Csv::write($f, $str, $columnDelimiter);
         }
 
         $total = [
@@ -192,7 +193,7 @@ class ReportStatsAdmin extends IndexAdmin
             'amount'        => $totalAmount
         ];
 
-        fputcsv($f, $total, $columnDelimiter, '"', "\\");
+        Csv::write($f, $total, $columnDelimiter);
         fclose($f);
 
         mb_substitute_character('none');
