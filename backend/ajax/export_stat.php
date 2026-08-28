@@ -22,6 +22,8 @@ $columnsNames = [
 ];
 
 $columnDelimiter = ';';
+// Используется как global ниже, но нигде не инициализировался
+$subcategoryDelimiter = '/';
 $exportFilesDir  = 'backend/files/export/';
 $filename        = 'export_stat.csv';
 
@@ -69,7 +71,7 @@ $f = fopen($exportFilesDir.$filename, 'ab');
 
 // Если начали сначала - добавим в первую строку названия колонок
 if ($page == 1) {
-    fputcsv($f, $columnsNames, $columnDelimiter);
+    fputcsv($f, $columnsNames, $columnDelimiter, '"', "\\");
 }
 
 $filter = [];
@@ -111,7 +113,7 @@ if (!empty($category)) {
     $categories_list = cat_tree($categories, $purchases);
 }
 foreach ($categories_list as $c) {
-    fputcsv($f, $c, $columnDelimiter);
+    fputcsv($f, $c, $columnDelimiter, '"', "\\");
 }
 
 $total = [
@@ -120,7 +122,7 @@ $total = [
     'price'=>$totalPrice
 ];
 
-fputcsv($f, $total, $columnDelimiter);
+fputcsv($f, $total, $columnDelimiter, '"', "\\");
 fclose($f);
 
 mb_substitute_character('none');
