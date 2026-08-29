@@ -368,6 +368,11 @@ class Request
         
         return $protocol;
     }
+
+    public static function isSecure(): bool
+    {
+        return self::getProtocol() === 'https';
+    }
     
     /**
      * Проверка сессии

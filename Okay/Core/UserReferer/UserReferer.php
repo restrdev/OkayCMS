@@ -5,6 +5,7 @@ namespace Okay\Core\UserReferer;
 
 
 use Okay\Core\Request;
+use Okay\Core\Response;
 
 class UserReferer
 {
@@ -56,7 +57,7 @@ class UserReferer
     private function saveUserReferer(array $referer)
     {
         self::$userReferer = $referer;
-        setcookie('userReferer', base64_encode(json_encode($referer)), time()+60*60*24*3, '/', '', false, false);
+        Response::setCookie('userReferer', base64_encode(json_encode($referer)), ['ttl' => 60*60*24*3, 'secure' => false, 'httponly' => false]);
     }
     
     public function isInternalUrl($url)
