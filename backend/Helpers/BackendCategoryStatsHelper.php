@@ -45,11 +45,11 @@ class BackendCategoryStatsHelper
         $dateFrom = $this->request->get('date_from');
         $dateTo = $this->request->get('date_to');
 
-        if (!empty($date_from)) {
+        if (!empty($dateFrom)) {
             $filter['date_from'] = date("Y-m-d 00:00:01", strtotime((string) $dateFrom));
         }
 
-        if (!empty($date_to)) {
+        if (!empty($dateTo)) {
             $filter['date_to'] = date("Y-m-d 23:59:00", strtotime((string) $dateTo));
         }
 
