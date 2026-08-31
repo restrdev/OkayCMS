@@ -161,7 +161,7 @@ class Cart
     public function init()
     {
         if (empty($_SESSION['user_id'])) {
-            if (!empty($_COOKIE['shopping_cart']) && is_array($items = json_decode($_COOKIE['shopping_cart'], true))) {
+            if (!empty($_COOKIE['shopping_cart']) && is_array($items = $this->decodeCartCookie($_COOKIE['shopping_cart']))) {
                 foreach ($items as $key => $item){
                     if (!empty($_SESSION['shopping_cart'][$key]))
                     {
@@ -191,7 +191,7 @@ class Cart
     public function saveShoppingCart(array $items)
     {
         if (!empty($items)) {
-            $_COOKIE['shopping_cart'] = json_encode($items);
+            $_COOKIE['shopping_cart'] = $this->encodeCartCookie($items);
             Response::setCookie('shopping_cart', $_COOKIE['shopping_cart'], CookieOptions::MONTH);
         } else if (empty($items)) {
             //  And delete the cookie variable when we empty the trash
@@ -202,6 +202,27 @@ class Cart
         }
 
         ExtenderFacade::execute(__METHOD__, $this, func_get_args());
+    }
+
+    private function encodeCartCookie(array $items): string
+    {
+        $pairs = [];
+        foreach ($items as $variantId => $amount) {
+            $pairs[] = base_convert((string) $variantId, 10, 36) . '-' . base_convert((string) $amount, 10, 36);
+        }
+        return implode('_', $pairs);
+    }
+
+    private function decodeCartCookie(string $raw): array
+    {
+        $items = [];
+        foreach (explode('_', $raw) as $pair) {
+            $parts = explode('-', $pair);
+            if (count($parts) === 2) {
+                $items[(int) base_convert($parts[0], 36, 10)] = (int) base_convert($parts[1], 36, 10);
+            }
+        }
+        return $items;
     }
 
     /**
