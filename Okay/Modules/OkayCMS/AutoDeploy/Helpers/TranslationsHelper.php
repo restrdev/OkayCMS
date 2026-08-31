@@ -83,6 +83,20 @@ class TranslationsHelper
         return $this->localVars[$langLabel];
     }
 
+    /**
+     * actual cache
+     */
+    private function setLocalVars($langLabel, array $translations)
+    {
+        $this->localVars[$langLabel] = [];
+        foreach ($translations as $label => $value) {
+            $this->localVars[$langLabel][$label] = (object) [
+                'value' => $value,
+                'type'  => self::TRANS_T_LOCAL
+            ];
+        }
+    }
+
     public function writeThemeTranslations($langLabel, $translations)
     {
         // На локалке не нужно записывать локальные переводы
@@ -109,6 +123,7 @@ class TranslationsHelper
         }
 
         $this->translationsEntity->writeTranslationsToLangFile($langFile, $translationsToWrite);
+        $this->setLocalVars($langLabel, $translationsToWrite);
         $this->translationsEntity->initTranslations(true);
 
         // Удалим временный файл
@@ -146,6 +161,7 @@ class TranslationsHelper
         }
 
         $this->translationsEntity->writeTranslationsToLangFile($langFile, $translationsToWrite);
+        $this->setLocalVars($langLabel, $translationsToWrite);
         $this->translationsEntity->initTranslations(true);
 
         // Удалим временный файл

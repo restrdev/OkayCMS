@@ -39,6 +39,10 @@ class FrontTranslations
     
     public function __get($var)
     {
+        if (isset($this->_translations[$var])) {
+            return $this->_translations[$var];
+        }
+
         // Если не нашли перевода на текущем языке, посмотрим может есть этот перевод на основном языке или уже на английском
         /** @var TranslationsEntity $translations */
         $translations = $this->_entityFactory->get(TranslationsEntity::class);

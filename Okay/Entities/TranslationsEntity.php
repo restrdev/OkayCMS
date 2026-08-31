@@ -455,6 +455,10 @@ class TranslationsEntity extends Entity
         fwrite($file, $content);
         fclose($file);
 
+        if (function_exists('opcache_invalidate')) {
+            @opcache_invalidate($langFile, true);
+        }
+
         return ExtenderFacade::execute([static::class, __FUNCTION__], null, func_get_args());
     }
 
